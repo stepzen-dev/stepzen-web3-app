@@ -1,0 +1,2846 @@
+"""
+A viewer for security scheme 'ApiKeyAuth'
+"""
+type Query {
+  """
+  Gets the contents of a block by block hash
+
+  Equivalent to GET /block/{block_number_or_hash}
+  """
+  moralis_block(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The block hash or block number
+    """
+    blockNumberOrHash: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+  ): Moralis_Block
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/block/$block_number_or_hash;"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets the closest block of the provided date
+
+  Equivalent to GET /dateToBlock
+  """
+  moralis_blockDate(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    Unix date in miliseconds or a datestring (any format that is accepted by momentjs)
+    """
+    date: String!
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+  ): Moralis_BlockDate
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/dateToBlock"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets the contents of a block transaction by hash
+
+  Equivalent to GET /transaction/{transaction_hash}
+  """
+  moralis_blockTransaction(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+
+    """
+    The transaction hash
+    """
+    transactionHash: String!
+  ): Moralis_BlockTransaction
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/transaction/$transaction_hash;"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Resolves an ETH address and find the ENS name
+
+
+  Equivalent to GET /resolve/{address}/reverse
+  """
+  moralis_ens(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The address to be resolved
+    """
+    address: String!
+  ): Moralis_Ens
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/resolve/$address;/reverse"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets token balances for a specific address
+
+  Equivalent to GET /{address}/erc20
+  """
+  moralis_erc20(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The address for which token balances will be checked
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+
+    """
+    The block number on which the balances should be checked
+    """
+    toBlock: Float
+
+    """
+    The addresses to get balances for (Optional)
+    """
+    tokenAddresses: [String]
+  ): [Moralis_Erc20TokenBalance]
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$address;/erc20"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets the amount which the spender is allowed to withdraw from the spender
+
+  Equivalent to GET /erc20/{address}/allowance
+  """
+  moralis_erc20Allowance(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The address of the token contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The address of the token owner
+    """
+    ownerAddress: String!
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+
+    """
+    The address of the token spender
+    """
+    spenderAddress: String!
+  ): Moralis_Erc20Allowance
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/erc20/$address/allowance"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Returns metadata (name, symbol, decimals, logo) for a given token contract address.
+
+  Equivalent to GET /erc20/metadata
+  """
+  moralis_erc20Metadata(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The addresses to get metadata for
+    """
+    addresses: [String]!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+  ): [Moralis_Erc20Metadata2]
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/erc20/metadata"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Returns metadata (name, symbol, decimals, logo) for a given token contract address.
+
+  Equivalent to GET /erc20/metadata/symbols
+  """
+  moralis_erc20MetadataSymbols(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+
+    """
+    The symbols to get metadata for
+    """
+    symbols: [String]!
+  ): [Moralis_Erc20Metadata2]
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/erc20/metadata/symbols"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Returns the price nominated in the native token and usd for a given token contract address.
+
+  Equivalent to GET /erc20/{address}/price
+  """
+  moralis_erc20Price(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The address of the token contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The factory name or address of the token exchange
+    """
+    exchange: String
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+
+    """
+    to_block
+    """
+    toBlock: Int
+  ): Moralis_Erc20Price
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/erc20/$address/price"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets ERC20 token transactions in descending order based on block number
+
+  Equivalent to GET /{address}/erc20/transfers
+  """
+  moralis_erc20TransactionCollection(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    address
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The minimum block number from where to get the transactions
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromBlock: Int
+
+    """
+    The date from where to get the transactions (any format that is accepted by momentjs)
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromDate: String
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+
+    """
+    The maximum block number from where to get the transactions.
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toBlock: Int
+
+    """
+    Get the transactions to this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toDate: String
+  ): Moralis_Erc20TransactionCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$address/erc20/transfers"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets the transfers of the tokens matching the given parameters
+
+  Equivalent to GET /nft/{address}/transfers
+  """
+  moralis_getContractNFTTransfers(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    Address of the contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The cursor returned in the last response (for getting the next page)
+    """
+    cursor: String
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+  ): Moralis_NftTransferCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address/transfers"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets all owners of NFT items within a given contract collection
+  * Use after /nft/contract/{token_address} to find out who owns each token id in a collection
+  * Make sure to include a sort parm on a column like block_number_minted for consistent pagination results
+  * Requests for contract addresses not yet indexed will automatically start the indexing process for that NFT collection
+
+
+  Equivalent to GET /nft/{address}/owners
+  """
+  moralis_getNFTOwners(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    Address of the contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The cursor returned in the last response (for getting the next page)
+    """
+    cursor: String
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+  ): Moralis_NftOwnerCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address/owners"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets the transfers of the tokens matching the given parameters
+
+  Equivalent to GET /{address}/nft/transfers
+  """
+  moralis_getNFTTransfers(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The sender or recepient of the transfer
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The cursor returned in the last response (for getting the next page)
+    """
+    cursor: String
+
+    """
+    The transfer direction
+    """
+    direction: Moralis_Direction
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+  ): Moralis_NftTransferCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$address/nft/transfers"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets NFTs owned by the given address
+  * Use the token_address param to get results for a specific contract only
+  * Note results will include all indexed NFTs
+  * Any request which includes the token_address param will start the indexing process for that NFT collection the very first time it is requested
+
+
+  Equivalent to GET /{address}/nft/{token_address}
+  """
+  moralis_getNFTsForContract(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The owner of a given token
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    Address of the contract
+    """
+    tokenAddress: String!
+  ): Moralis_NftOwnerCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$address/nft/$token_address"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets the transfers of the tokens from a block number to a block number
+
+  Equivalent to GET /nft/transfers
+  """
+  moralis_getNftTransfersFromToBlock(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The cursor returned in the last response (for getting the next page)
+    """
+    cursor: String
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    The minimum block number from where to get the transfers
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromBlock: Int
+
+    """
+    The date from where to get the transfers (any format that is accepted by momentjs)
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromDate: String
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    The maximum block number from where to get the transfers.
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toBlock: Int
+
+    """
+    Get transfers up until this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toDate: String
+  ): Moralis_NftTransferCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/transfers"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Fetches and returns pair data of the provided token0+token1 combination.
+  The token0 and token1 options are interchangable (ie. there is no different outcome in "token0=WETH and token1=USDT" or "token0=USDT and token1=WETH")
+
+
+  Equivalent to GET /{token0_address}/{token1_address}/pairAddress
+  """
+  moralis_getPairAddress(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The factory name or address of the token exchange
+    """
+    exchange: Moralis_Exchange!
+
+    """
+    To get the reserves at this block number
+    """
+    toBlock: String
+
+    """
+    Get the reserves to this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toDate: String
+
+    """
+    Token0 address
+    """
+    token0Address: String!
+
+    """
+    Token1 address
+    """
+    token1Address: String!
+  ): Moralis_ReservesCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$token0_address/$token1_address/pairAddress"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets ERC20 token contract transactions in descending order based on block number
+
+  Equivalent to GET /erc20/{address}/transfers
+  """
+  moralis_getTokenAddressTransfers(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The address of the token contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The minimum block number from where to get the transfers
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromBlock: Int
+
+    """
+    The date from where to get the transfers (any format that is accepted by momentjs)
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromDate: String
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+
+    """
+    The maximum block number from where to get the transfers.
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toBlock: Int
+
+    """
+    Get the transfers to this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toDate: String
+  ): Moralis_Erc20TransactionCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/erc20/$address/transfers"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets all owners of NFT items within a given contract collection
+  * Use after /nft/contract/{token_address} to find out who owns each token id in a collection
+  * Make sure to include a sort parm on a column like block_number_minted for consistent pagination results
+  * Requests for contract addresses not yet indexed will automatically start the indexing process for that NFT collection
+
+
+  Equivalent to GET /nft/{address}/{token_id}/owners
+  """
+  moralis_getTokenIdOwners(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    Address of the contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The cursor returned in the last response (for getting the next page)
+    """
+    cursor: String
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    The id of the token
+    """
+    tokenId: String!
+  ): Moralis_NftOwnerCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address/$token_id/owners"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets the transfers of the tokens matching the given parameters
+
+  Equivalent to GET /nft/{address}/{token_id}/transfers
+  """
+  moralis_getWalletTokenIdTransfers(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    Address of the contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The cursor returned in the last response (for getting the next page)
+    """
+    cursor: String
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    The field(s) to order on and if it should be ordered in ascending or descending order. Specified by: fieldName1.order,fieldName2.order. Example 1: "block_number", "block_number.ASC", "block_number.DESC", Example 2: "block_number and contract_type", "block_number.ASC,contract_type.DESC"
+    """
+    order: String
+
+    """
+    The id of the token
+    """
+    tokenId: String!
+  ): Moralis_NftTransferCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address/$token_id/transfers"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets the logs from an address
+
+  Equivalent to GET /{address}/logs
+  """
+  moralis_logEventByAddress(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    address
+    """
+    address: String!
+
+    """
+    The block number
+    * Provide the param 'block_numer' or ('from_block' and / or 'to_block')
+    * If 'block_numer' is provided in conbinaison with 'from_block' and / or 'to_block', 'block_number' will will be used
+    """
+    blockNumber: String
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The minimum block number from where to get the logs
+    * Provide the param 'block_numer' or ('from_block' and / or 'to_block')
+    * If 'block_numer' is provided in conbinaison with 'from_block' and / or 'to_block', 'block_number' will will be used
+    """
+    fromBlock: String
+
+    """
+    The date from where to get the logs (any format that is accepted by momentjs)
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    * If 'from_date' and the block params are provided, the block params will be used. Please refer to the blocks params sections (block_number,from_block and to_block) on how to use them
+    """
+    fromDate: String
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+
+    """
+    The maximum block number from where to get the logs
+    * Provide the param 'block_numer' or ('from_block' and / or 'to_block')
+    * If 'block_numer' is provided in conbinaison with 'from_block' and / or 'to_block', 'block_number' will will be used
+    """
+    toBlock: String
+
+    """
+    Get the logs to this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    * If 'to_date' and the block params are provided, the block params will be used. Please refer to the blocks params sections (block_number,from_block and to_block) on how to use them
+    """
+    toDate: String
+
+    """
+    topic0
+    """
+    topic0: String
+
+    """
+    topic1
+    """
+    topic1: String
+
+    """
+    topic2
+    """
+    topic2: String
+
+    """
+    topic3
+    """
+    topic3: String
+  ): Moralis_LogEventByAddress
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$address/logs"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets native balance for a specific address
+
+  Equivalent to GET /{address}/balance
+  """
+  moralis_nativeBalance(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The address for which the native balance will be checked
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+
+    """
+    The block number on which the balances should be checked
+    """
+    toBlock: Float
+  ): Moralis_NativeBalance
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$address/balance"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets data, including metadata (where available), for the given token id of the given contract address.
+  * Requests for contract addresses not yet indexed will automatically start the indexing process for that NFT collection
+
+
+  Equivalent to GET /nft/{address}/{token_id}
+  """
+  moralis_nft(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    Address of the contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    The id of the token
+    """
+    tokenId: String!
+  ): Moralis_Nft
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address;/$tokenId;"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+      setters: [
+        { field: "tokenId", path: "token_id" }
+        { field: "tokenAddress", path: "token_address" }
+        { field: "tokenUri", path: "token_uri" }
+        { field: "contractType", path: "contract_type" }
+        { field: "tokenHash", path: "token_hash" }
+        { field: "minterAddress", path: "minter_address" }
+        { field: "blockNumberMinted", path: "block_number_minted" }
+        { field: "transactionMinted", path: "transaction_minted" }
+        { field: "syncedAt", path: "synced_at" }
+      ]
+    )
+
+  """
+  Gets data, including metadata (where available), for all token ids for the given contract address.
+  * Results are sorted by the block the token id was minted (descending) and limited to 100 per page by default
+  * Requests for contract addresses not yet indexed will automatically start the indexing process for that NFT collection
+
+
+  Equivalent to GET /nft/{address}
+  """
+  moralis_nftCollection(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    Address of the contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The cursor returned in the last response (for getting the next page)
+    """
+    cursor: String
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+  ): Moralis_NftCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets the contract level metadata (name, symbol, base token uri) for the given contract
+  * Requests for contract addresses not yet indexed will automatically start the indexing process for that NFT collection
+
+
+  Equivalent to GET /nft/{address}/metadata
+  """
+  moralis_nftContractMetadata(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    Address of the contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+  ): Moralis_NftContractMetadata
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address/metadata"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets NFTs that match a given metadata search.
+
+  Equivalent to GET /nft/search
+  """
+  moralis_nftMetadataCollection(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    What fields the search should match on. To look into the entire metadata set the value to 'global'. To have a better response time you can look into a specific field like name
+    """
+    filter: Moralis_Filter
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    The minimum block number from where to start the search
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromBlock: Int
+
+    """
+    The date from where to start the search (any format that is accepted by momentjs)
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromDate: String
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    The search string
+    """
+    q: String!
+
+    """
+    The maximum block number from where to end the search
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toBlock: Int
+
+    """
+    Get search results up until this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toDate: String
+  ): [Moralis_NftMetadata]
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/search"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+      resultroot: "result[]"
+      setters: [
+        { field: "tokenId", path: "token_id" }
+        { field: "tokenAddress", path: "token_address" }
+        { field: "tokenUri", path: "token_uri" }
+        { field: "contractType", path: "contract_type" }
+        { field: "tokenHash", path: "token_hash" }
+        { field: "minterAddress", path: "minter_address" }
+        { field: "blockNumberMinted", path: "block_number_minted" }
+        { field: "transactionMinted", path: "transaction_minted" }
+        { field: "syncedAt", path: "synced_at" }
+      ]
+    )
+
+  """
+  Gets NFTs owned by the given address
+  * The response will include status [SYNCED/SYNCING] based on the contracts being indexed.
+  * Use the token_address param to get results for a specific contract only
+  * Note results will include all indexed NFTs
+  * Any request which includes the token_address param will start the indexing process for that NFT collection the very first time it is requested
+
+
+  Equivalent to GET /{address}/nft
+  """
+  moralis_nftOwnerCollection(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The owner of a given token
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The cursor returned in the last response (for getting the next page)
+    """
+    cursor: String
+
+    """
+    The format of the token id
+    """
+    format: Moralis_Format
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    The addresses to get balances for (Optional)
+    """
+    tokenAddresses: [String]
+  ): Moralis_NftOwnerCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$address/nft"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets NFT transfers by block number or block hash
+
+  Equivalent to GET /block/{block_number_or_hash}/nft/transfers
+  """
+  moralis_nftTransferCollection(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The block hash or block number
+    """
+    blockNumberOrHash: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The cursor returned in the last response (for getting the next page)
+    """
+    cursor: String
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+  ): Moralis_NftTransferCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/block/$block_number_or_hash/nft/transfers"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Get the liquidity reserves for a given pair address. Only Uniswap V2 based exchanges supported at the moment.
+
+  Equivalent to GET /{pair_address}/reserves
+  """
+  moralis_reservesCollection(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    Liquidity pair address
+    """
+    pairAddress: String!
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+
+    """
+    To get the reserves at this block number
+    """
+    toBlock: String
+
+    """
+    Get the reserves to this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toDate: String
+  ): Moralis_ReservesCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$pair_address/reserves"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Resolves an Unstoppable domain and returns the address
+
+
+  Equivalent to GET /resolve/{domain}
+  """
+  moralis_resolve(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    The currency to query
+    """
+    currency: Moralis_Currency
+
+    """
+    Domain to be resolved
+    """
+    domain: String!
+  ): Moralis_Resolve
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/resolve/$domain"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Get the lowest price found for a nft token contract for the last x days (only trades paid in ETH)
+
+  Equivalent to GET /nft/{address}/lowestprice
+  """
+  moralis_trade(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    Address of the contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The number of days to look back to find the lowest price
+    If not provided 7 days will be the default
+    """
+    days: Int
+
+    """
+    marketplace from where to get the trades (only opensea is supported at the moment)
+    """
+    marketplace: Moralis_Marketplace
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+  ): Moralis_Trade
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address/lowestprice"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Get the nft trades for a given contracts and marketplace
+
+  Equivalent to GET /nft/{address}/trades
+  """
+  moralis_tradeCollection(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    Address of the contract
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The minimum block number from where to get the transfers
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromBlock: Int
+
+    """
+    The date from where to get the transfers (any format that is accepted by momentjs)
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromDate: String
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    marketplace from where to get the trades (only opensea is supported at the moment)
+    """
+    marketplace: Moralis_Marketplace
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+
+    """
+    To get the reserves at this block number
+    """
+    toBlock: String
+
+    """
+    Get the reserves to this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toDate: String
+  ): Moralis_TradeCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address/trades"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Gets native transactions in descending order based on block number
+
+  Equivalent to GET /{address}
+  """
+  moralis_transactionCollection(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    address
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    The minimum block number from where to get the transactions
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromBlock: Int
+
+    """
+    The date from where to get the transactions (any format that is accepted by momentjs)
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromDate: String
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+
+    """
+    The maximum block number from where to get the transactions.
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toBlock: Int
+
+    """
+    Get the transactions to this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toDate: String
+  ): Moralis_TransactionCollection
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$address"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Returns the web3 api version
+
+  Equivalent to GET /web3/version
+  """
+  moralis_web3version(moralis_apikey: Secret!): Moralis_Web3version
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/web3/version"
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+}
+
+type Moralis_Block {
+  """
+  The difficulty of the block
+  """
+  difficulty: String!
+  extraData: String!
+
+  """
+  The gas limit
+  """
+  gasLimit: String!
+
+  """
+  The gas used
+  """
+  gasUsed: String!
+
+  """
+  The block hash
+  """
+  hash: String!
+  logsBloom: String!
+
+  """
+  The address of the miner
+  """
+  miner: String!
+
+  """
+  The nonce
+  """
+  nonce: String!
+
+  """
+  The block number
+  """
+  number: String!
+
+  """
+  The block hash of the parent block
+  """
+  parentHash: String!
+  receiptsRoot: String!
+  sha3Uncles: String!
+
+  """
+  The block size
+  """
+  size: String!
+  stateRoot: String!
+
+  """
+  The block timestamp
+  """
+  timestamp: String!
+
+  """
+  The total difficulty
+  """
+  totalDifficulty: String!
+
+  """
+  The number of transactions in the block
+  """
+  transactionCount: String!
+
+  """
+  The transactions in the block
+  """
+  transactions: [Moralis_BlockTransaction]!
+  transactionsRoot: String!
+}
+
+type Moralis_BlockTransaction {
+  """
+  The hash of the block
+  """
+  blockHash: String!
+
+  """
+  The block number
+  """
+  blockNumber: String!
+
+  """
+  The block timestamp
+  """
+  blockTimestamp: String!
+
+  """
+  The from address
+  """
+  fromAddress: String!
+  gas: String
+
+  """
+  The gas price
+  """
+  gasPrice: String!
+
+  """
+  The hash of the transaction
+  """
+  hash: String!
+  input: String!
+
+  """
+  The logs of the transaction
+  """
+  logs: [Moralis_Log]!
+
+  """
+  The nonce
+  """
+  nonce: String!
+  receiptContractAddress: String
+  receiptCumulativeGasUsed: String!
+  receiptGasUsed: String!
+  receiptRoot: String
+  receiptStatus: String!
+
+  """
+  The to address
+  """
+  toAddress: String!
+  transactionIndex: String!
+
+  """
+  The value sent
+  """
+  value: String!
+}
+
+type Moralis_Log {
+  """
+  The address of the contract
+  """
+  address: String!
+
+  """
+  The hash of the block
+  """
+  blockHash: String!
+
+  """
+  The block number
+  """
+  blockNumber: String!
+
+  """
+  The timestamp of the block
+  """
+  blockTimestamp: String!
+
+  """
+  The data of the log
+  """
+  data: String!
+  logIndex: String!
+  topic0: String!
+  topic1: String
+  topic2: String
+  topic3: String
+
+  """
+  The hash of the transaction
+  """
+  transactionHash: String!
+  transactionIndex: String!
+}
+
+enum Moralis_Chain {
+  ETH
+  _0X1
+  ROPSTEN
+  _0X3
+  RINKEBY
+  _0X4
+  GOERLI
+  _0X5
+  KOVAN
+  _0X2A
+  POLYGON
+  _0X89
+  MUMBAI
+  _0X13881
+  BSC
+  _0X38
+  BSC_TESTNET
+  _0X61
+  AVALANCHE
+  _0XA86A
+  AVALANCHE_TESTNET
+  _0XA869
+  FANTOM
+  _0XFA
+}
+
+type Moralis_BlockDate {
+  """
+  The blocknumber
+  """
+  block: Float!
+
+  """
+  The date of the block
+  """
+  date: String!
+
+  """
+  The timestamp of the block
+  """
+  timestamp: Float!
+}
+
+type Moralis_Ens {
+  """
+  Resolved ENS address
+  """
+  name: String!
+}
+
+type Moralis_Erc20TokenBalance {
+  """
+  Timestamp of when the contract was last synced with the node
+  """
+  balance: String!
+
+  """
+  The number of decimals on of the token
+  """
+  decimals: String!
+
+  """
+  The logo of the token
+  """
+  logo: String
+
+  """
+  The name of the token Contract
+  """
+  name: String!
+
+  """
+  The symbol of the NFT contract
+  """
+  symbol: String!
+
+  """
+  The thumbnail of the logo
+  """
+  thumbnail: String
+
+  """
+  The address of the token contract
+  """
+  tokenAddress: String!
+}
+
+type Moralis_Erc20Allowance {
+  """
+  The allowance
+  """
+  allowance: String!
+}
+
+type Moralis_Erc20Metadata2 {
+  """
+  The address of the token contract
+  """
+  address: String!
+  blockNumber: String
+
+  """
+  The number of decimals on of the token
+  """
+  decimals: String!
+
+  """
+  The logo of the token
+  """
+  logo: String
+
+  """
+  The logo hash
+  """
+  logoHash: String
+
+  """
+  The name of the token Contract
+  """
+  name: String!
+
+  """
+  The symbol of the NFT contract
+  """
+  symbol: String!
+
+  """
+  The thumbnail of the logo
+  """
+  thumbnail: String
+  validated: String
+}
+
+type Moralis_Erc20Price {
+  """
+  The address of the exchange used to calculate the price
+  """
+  exchangeAddress: String
+
+  """
+  The name of the exchange used for calculating the price
+  """
+  exchangeName: String
+  nativePrice: Moralis_NativeErc20Price
+
+  """
+  The price in USD for the token
+  """
+  usdPrice: Float!
+}
+
+type Moralis_NativeErc20Price {
+  """
+  The number of decimals of the token
+  """
+  decimals: Int!
+
+  """
+  The Name of the token
+  """
+  name: String!
+
+  """
+  The Symbol of the token
+  """
+  symbol: String!
+
+  """
+  The native price of the token
+  """
+  value: String!
+}
+
+type Moralis_Erc20TransactionCollection {
+  """
+  The page of the current result
+  """
+  page: Int
+
+  """
+  The number of results per page
+  """
+  pageSize: Int
+  result: [Moralis_Erc20Transaction]
+
+  """
+  The total number of matches for this query
+  """
+  total: Int
+}
+
+type Moralis_Erc20Transaction {
+  """
+  The address of the token
+  """
+  address: String!
+
+  """
+  The block hash
+  """
+  blockHash: String!
+
+  """
+  The block number
+  """
+  blockNumber: String!
+
+  """
+  The block timestamp
+  """
+  blockTimestamp: String!
+
+  """
+  The sender
+  """
+  fromAddress: String!
+
+  """
+  The recipient
+  """
+  toAddress: String!
+
+  """
+  The transaction hash
+  """
+  transactionHash: String!
+
+  """
+  The value that was transfered (in wei)
+  """
+  value: String!
+}
+
+type Moralis_NftTransferCollection {
+  """
+  Indicator if the block exists
+  """
+  blockExists: Boolean
+
+  """
+  Indicator if the block is fully indexed
+  """
+  indexComplete: Boolean
+
+  """
+  The page of the current result
+  """
+  page: Int!
+
+  """
+  The number of results per page
+  """
+  pageSize: Int!
+  result: [Moralis_NftTransfer]!
+
+  """
+  The total number of matches for this query
+  """
+  total: Int!
+}
+
+type Moralis_NftTransfer {
+  """
+  The number of tokens transferred
+  """
+  amount: String
+
+  """
+  The block hash of the transaction
+  """
+  blockHash: String!
+
+  """
+  The blocknumber of the transaction
+  """
+  blockNumber: String!
+
+  """
+  The block timestamp
+  """
+  blockTimestamp: String!
+
+  """
+  The type Moralis_of NFT contract standard
+  """
+  contractType: String!
+
+  """
+  The address that sent the NFT
+  """
+  fromAddress: String
+
+  """
+  The log index
+  """
+  logIndex: Int!
+
+  """
+  The operator present only for ERC1155 Transfers
+  """
+  operator: String
+
+  """
+  The address that recieved the NFT
+  """
+  toAddress: String!
+
+  """
+  The address of the contract of the NFT
+  """
+  tokenAddress: String!
+
+  """
+  The token id of the NFT
+  """
+  tokenId: String!
+
+  """
+  The transaction hash
+  """
+  transactionHash: String!
+
+  """
+  The transaction index
+  """
+  transactionIndex: String
+
+  """
+  The transaction type
+  """
+  transactionType: String
+
+  """
+  The value that was sent in the transaction (ETH/BNB/etc..)
+  """
+  value: String
+}
+
+enum Moralis_Format {
+  DECIMAL
+  HEX
+}
+
+type Moralis_NftOwnerCollection {
+  """
+  The page of the current result
+  """
+  page: Int
+
+  """
+  The number of results per page
+  """
+  pageSize: Int
+  result: [Moralis_NftOwner]
+
+  """
+  The syncing status of the address [SYNCING/SYNCED]
+  """
+  status: String
+
+  """
+  The total number of matches for this query
+  """
+  total: Int
+}
+
+type Moralis_NftOwner {
+  """
+  The number of this item the user owns (used by ERC1155)
+  """
+  amount: String
+
+  """
+  The blocknumber when the amount or owner changed
+  """
+  blockNumber: String!
+
+  """
+  The blocknumber when the NFT was minted
+  """
+  blockNumberMinted: String!
+
+  """
+  The type Moralis_of NFT contract standard
+  """
+  contractType: String!
+
+  """
+  The metadata of the token
+  """
+  metadata: String
+
+  """
+  The name of the Token contract
+  """
+  name: String!
+
+  """
+  The address of the owner of the NFT
+  """
+  ownerOf: String!
+
+  """
+  The symbol of the NFT contract
+  """
+  symbol: String!
+
+  """
+  when the metadata was last updated
+  """
+  syncedAt: String
+
+  """
+  The address of the contract of the NFT
+  """
+  tokenAddress: String!
+
+  """
+  The token id of the NFT
+  """
+  tokenId: String!
+
+  """
+  The uri to the metadata of the token
+  """
+  tokenUri: String
+}
+
+enum Moralis_Direction {
+  BOTH
+  TO
+  FROM
+}
+
+type Moralis_ReservesCollection {
+  """
+  reserve0
+  """
+  reserve0: String!
+
+  """
+  reserve1
+  """
+  reserve1: String!
+}
+
+enum Moralis_Exchange {
+  UNISWAPV2
+  UNISWAPV3
+  SUSHISWAPV2
+  PANCAKESWAPV2
+  PANCAKESWAPV1
+  QUICKSWAP
+}
+
+type Moralis_LogEventByAddress {
+  """
+  The address of the contract
+  """
+  address: String!
+
+  """
+  The block hash
+  """
+  blockHash: String!
+
+  """
+  The block number
+  """
+  blockNumber: String!
+
+  """
+  The block timestamp
+  """
+  blockTimestamp: String!
+
+  """
+  The data of the log
+  """
+  data: String!
+  topic0: String!
+  topic1: String!
+  topic2: String!
+  topic3: String!
+
+  """
+  The transaction hash
+  """
+  transactionHash: String!
+}
+
+type Moralis_NativeBalance {
+  """
+  The balance
+  """
+  balance: String!
+}
+
+type Moralis_Nft {
+  """
+  The number of this item the user owns (used by ERC1155)
+  """
+  amount: String
+
+  """
+  The type Moralis_of NFT contract standard
+  """
+  contractType: String!
+
+  """
+  The metadata of the token
+  """
+  metadata: String
+
+  """
+  The name of the Token contract
+  """
+  name: String!
+
+  """
+  The symbol of the NFT contract
+  """
+  symbol: String!
+
+  """
+  when the metadata was last updated
+  """
+  syncedAt: String
+
+  """
+  The address of the contract of the NFT
+  """
+  tokenAddress: String!
+
+  """
+  The token id of the NFT
+  """
+  tokenId: String!
+
+  """
+  The uri to the metadata of the token
+  """
+  tokenUri: String
+
+  """
+  The token hash of the NFT
+  """
+  tokenHash: String
+
+  """
+  The address of the NFT minter
+  """
+  minterAddress: String
+
+  """
+  The blog of the minted NFT
+  """
+  blockNumberMinted: String
+
+  """
+  The transaction log of the mint NFT
+  """
+  transactionMinted: String
+}
+
+type Moralis_NftCollection {
+  """
+  The page of the current result
+  """
+  page: Int
+
+  """
+  The number of results per page
+  """
+  pageSize: Int
+  result: [Moralis_Nft]
+
+  """
+  The total number of matches for this query
+  """
+  total: Int
+}
+
+type Moralis_NftContractMetadata {
+  """
+  The type Moralis_of NFT contract
+  """
+  contractType: String!
+
+  """
+  The name of the token Contract
+  """
+  name: String!
+
+  """
+  The symbol of the NFT contract
+  """
+  symbol: String!
+
+  """
+  Timestamp of when the contract was last synced with the node
+  """
+  syncedAt: String
+
+  """
+  The address of the token contract
+  """
+  tokenAddress: String!
+}
+
+type Moralis_NftMetadataCollection {
+  """
+  The page of the current result
+  """
+  page: Int
+
+  """
+  The number of results per page
+  """
+  pageSize: Int
+  result: [Moralis_NftMetadata]
+
+  """
+  The total number of matches for this query
+  """
+  total: Int
+}
+
+type Moralis_NftMetadata {
+  """
+  The type Moralis_of NFT contract standard
+  """
+  contractType: String
+
+  """
+  The metadata of the token
+  """
+  metadata: String!
+
+  """
+  when the metadata was last updated
+  """
+  syncedAt: String
+
+  """
+  The address of the contract of the NFT
+  """
+  tokenAddress: String
+
+  """
+  The token id of the NFT
+  """
+  tokenId: String
+
+  """
+  The uri to the metadata of the token
+  """
+  tokenUri: String
+
+  """
+  The token hash of the NFT
+  """
+  tokenHash: String
+
+  """
+  The address of the NFT minter
+  """
+  minterAddress: String
+
+  """
+  The blog of the minted NFT
+  """
+  blockNumberMinted: String
+
+  """
+  The transaction log of the mint NFT
+  """
+  transactionMinted: String
+}
+
+enum Moralis_Filter {
+  NAME
+  DESCRIPTION
+  ATTRIBUTES
+  GLOBAL
+  NAME_DESCRIPTION
+  NAME_ATTRIBUTES
+  DESCRIPTION_ATTRIBUTES
+  NAME_DESCRIPTION_ATTRIBUTES
+}
+
+type Moralis_Resolve {
+  """
+  Resolved domain address
+  """
+  address: String!
+}
+
+enum Moralis_Currency {
+  ETH
+  _0X1
+}
+
+type Moralis_Trade {
+  """
+  The block hash
+  """
+  blockHash: String!
+
+  """
+  The blocknumber of the transaction
+  """
+  blockNumber: String!
+
+  """
+  The block timestamp
+  """
+  blockTimestamp: String!
+
+  """
+  The address that bought the NFT
+  """
+  buyerAddress: String!
+
+  """
+  The address of the contract that traded the NFT
+  """
+  marketplaceAddress: String!
+
+  """
+  The value that was sent in the transaction (ETH/BNB/etc..)
+  """
+  price: String!
+
+  """
+  The address that sold the NFT
+  """
+  sellerAddress: String!
+
+  """
+  The transaction hash
+  """
+  transactionHash: String!
+
+  """
+  The transaction index
+  """
+  transactionIndex: String!
+}
+
+enum Moralis_Marketplace {
+  OPENSEA
+}
+
+type Moralis_TradeCollection {
+  """
+  The page of the current result
+  """
+  page: Int
+
+  """
+  The number of results per page
+  """
+  pageSize: Int
+  result: [Moralis_Trade]
+
+  """
+  The total number of matches for this query
+  """
+  total: Int
+}
+
+type Moralis_TransactionCollection {
+  """
+  The page of the current result
+  """
+  page: Int
+
+  """
+  The number of results per page
+  """
+  pageSize: Int
+  result: [Moralis_Transaction]
+
+  """
+  The total number of matches for this query
+  """
+  total: Int
+}
+
+type Moralis_Transaction {
+  """
+  The block hash
+  """
+  blockHash: String!
+
+  """
+  The block number
+  """
+  blockNumber: String!
+
+  """
+  The block timestamp
+  """
+  blockTimestamp: String!
+
+  """
+  The sender
+  """
+  fromAddress: String!
+
+  """
+  The gas of the transaction
+  """
+  gas: String!
+
+  """
+  The gas price
+  """
+  gasPrice: String!
+
+  """
+  The hash of the transaction
+  """
+  hash: String!
+
+  """
+  The input
+  """
+  input: String!
+
+  """
+  The nonce of the transaction
+  """
+  nonce: String!
+
+  """
+  The receipt contract address
+  """
+  receiptContractAddress: String!
+
+  """
+  The receipt cumulative gas used
+  """
+  receiptCumulativeGasUsed: String!
+
+  """
+  The receipt gas used
+  """
+  receiptGasUsed: String!
+
+  """
+  The receipt root
+  """
+  receiptRoot: String!
+
+  """
+  The receipt status
+  """
+  receiptStatus: String!
+
+  """
+  The recipient
+  """
+  toAddress: String!
+
+  """
+  The transaction index
+  """
+  transactionIndex: String!
+
+  """
+  The value that was transfered (in wei)
+  """
+  value: String!
+}
+
+type Moralis_Web3version {
+  """
+  version of the api
+  """
+  version: String!
+}
+
+"""
+A viewer for security scheme 'ApiKeyAuth'
+"""
+type Mutation {
+  """
+  Gets events in descending order based on block number
+
+  Equivalent to POST /{address}/events
+  """
+  moralis_getContractEvents(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    address
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    Changed from JSON to String
+    """
+    eventsInput: String
+
+    """
+    The minimum block number from where to get the logs
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromBlock: Int
+
+    """
+    The date from where to get the logs (any format that is accepted by momentjs)
+    * Provide the param 'from_block' or 'from_date'
+    * If 'from_date' and 'from_block' are provided, 'from_block' will be used.
+    """
+    fromDate: String
+
+    """
+    limit
+    """
+    limit: Int
+
+    """
+    offset
+    """
+    offset: Int
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+
+    """
+    The maximum block number from where to get the logs.
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toBlock: Int
+
+    """
+    Get the logs to this date (any format that is accepted by momentjs)
+    * Provide the param 'to_block' or 'to_date'
+    * If 'to_date' and 'to_block' are provided, 'to_block' will be used.
+    """
+    toDate: String
+
+    """
+    The topic of the event
+    """
+    topic: String!
+  ): [Moralis_LogEvent]
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/block/$address/events"
+      method: POST
+      postbody: ""
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Runs a given function of a contract abi and returns readonly data
+
+  Equivalent to POST /{address}/function
+  """
+  moralis_runContractFunction(
+    """
+    The api key
+    """
+    moralis_apikey: Secret!
+
+    """
+    address
+    """
+    address: String!
+
+    """
+    The chain to query
+    """
+    chain: Moralis_Chain
+
+    """
+    function_name
+    """
+    functionName: String!
+
+    """
+    web3 provider url to user when using local dev chain
+    """
+    providerUrl: String
+    runContractDtoInput: Moralis_RunContractDtoInput!
+
+    """
+    The subdomain of the moralis server to use (Only use when selecting local devchain as chain)
+    """
+    subdomain: String
+  ): String
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/$address/function"
+      method: POST
+      postbody: ""
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+
+  """
+  Uploads multiple files and place them in a folder directory
+
+
+  Equivalent to POST /ipfs/uploadFolder
+  """
+  moralis_uploadFolder(
+    ipfsUploadFolderInput: Moralis_IpfsFileRequestInput
+  ): [Moralis_IpfsFile]
+    @rest(
+      endpoint: "https://deep-index.moralis.io/api/v2/ipfs/uploadFolder"
+      method: POST
+      postbody: ""
+      headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+    )
+}
+
+type Moralis_LogEvent {
+  """
+  The address of the contract
+  """
+  address: String!
+
+  """
+  The block hash
+  """
+  blockHash: String!
+
+  """
+  The block number
+  """
+  blockNumber: String!
+
+  """
+  The block timestamp
+  """
+  blockTimestamp: String!
+
+  """
+  The content of the event
+  """
+  data: JSON!
+
+  """
+  The transaction hash
+  """
+  transactionHash: String!
+}
+
+input Moralis_RunContractDtoInput {
+  """
+  The contract abi
+  """
+  abi: JSON!
+
+  """
+  The params for the given function
+  """
+  params: JSON
+}
+
+type Moralis_IpfsFile {
+  """
+  Path to file
+  """
+  path: String!
+}
+
+input Moralis_IpfsFileRequestInput {
+  """
+  base64 or JSON
+  """
+  content: String!
+
+  """
+  Path to file
+  """
+  path: String!
+}

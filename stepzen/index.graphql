@@ -1,0 +1,3 @@
+schema @sdl(files: ["infura.graphql", "moralis.graphql", "etherscan.graphql"]) {
+  query: Query
+}
