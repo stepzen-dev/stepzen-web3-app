@@ -1,4 +1,4 @@
-import { getProviders } from '../../lib/api'
+import { fetchAPI } from '../../lib/api'
 
 export default async (req, res) => {
 
@@ -9,7 +9,7 @@ export default async (req, res) => {
     address = process.env.ADDRESS
   }
 
-  const data = await getProviders(
+  const data = await fetchAPI(
     process.env.STEPZEN_API_URL,
     process.env.STEPZEN_API_KEY,
     `
