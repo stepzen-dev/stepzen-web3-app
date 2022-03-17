@@ -12,6 +12,7 @@ export default function Home(props) {
   const [publicAddress, setPublicAddress] = useState("");
 
   // Get the data from StepZen API
+  const [fetched, setFetched] = useState(false);
   const [moralisTokenBalances, setMoralisTokenBalances] = useState("");
   const [moralisNFT, setMoralisNFT] = useState("");
   const [infuraGasPrices, setInfuraGasPrices] = useState("");
@@ -41,17 +42,23 @@ export default function Home(props) {
         // Fetch data from external API
         const res = await fetch(`/api/hello?address=${ethereumPublicAddress}`)
         let data = await res.json()
-        data = data.data
+
+        // Once fetched, display the data
+        if(data) {
+          setFetched(true)
+        }
+
+        data = data.data.data
         console.log("data", data);
 
         // Get the data sources to display as tables on page   
-        let metadata = JSON.parse(data.moralis_nft.metadata);
-        setMoralisTokenBalances(data.moralis_erc20);
-        setMoralisNFT(`https://ipfs.io/${metadata.image.slice(7)}`);
-        setInfuraGasPrices(data.infura_gas_price);
+        let metadata = data?.moralis_nft?.metadata ? JSON.parse(data?.moralis_nft?.metadata) : null;
+        setMoralisTokenBalances(data?.moralis_erc20);
+        setMoralisNFT(metadata ? `https://ipfs.io/${metadata?.image.slice(7)}`: null);
+        setInfuraGasPrices(data?.infura_gas_price);
 
         // If a transaction was linked to the ethereum log
-        data.etherscan_logs.result.forEach(function (element) {
+        data?.etherscan_logs?.result.forEach(function (element) {
           if (element.transaction.value) {
             setEtherscanLogs((etherscanLogs) => [...etherscanLogs, element]);
           }
@@ -72,11 +79,127 @@ export default function Home(props) {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to StepZen web3</h1>
-        {publicAddress ? (
-          <p className={styles.description}>
-            Your public address
-            <code className={styles.code}>{publicAddress}</code>
-          </p>
+        {publicAddress && fetched ? (
+          <>
+            <p className={styles.description}>
+              Your public address
+              <code className={styles.code}>{publicAddress}</code>
+            </p>
+            {moralisNFT ? (
+              <>
+                <img style={{ maxWidth: "100px" }} src={moralisNFT} alt="elon" />
+                <h5 style={{ margin: "5px", color: "grey" }}>
+                  <em>source: moralis</em>
+                </h5>
+              </>
+            ) : (
+              <p style={{ border: "1px solid black", padding: "1rem"}}>
+                <em>moralis_nft</em> returned null. Did you add your MORALIS_API_KEY?
+              </p>
+            )}
+            {etherscanLogs.length > 0 ? (
+              <>
+                <h3 style={{ margin: "40px 0 0 0" }}>
+                  Hash Logs with Transaction Details
+                </h3>
+                <h5 style={{ margin: "5px", color: "grey" }}>
+                  <em>source: etherscan</em>
+                </h5>
+                <table style={styles.table}>
+                  <tbody style={styles.tbody}>
+                    <tr style={{ borderBottom: "2px solid black" }}>
+                      <td>Token</td>
+                      <td>Balance</td>
+                      <td>Gas Used</td>
+                      <td>Transaction Hash</td>
+                      <td>Transaction Input</td>
+                    </tr>
+                    {etherscanLogs.map((log, index) => (
+                      <tr key={index}>
+                        <td>{log.address}</td>
+                        <td>{log.blockNumber}</td>
+                        <td>{log.gasUsed}</td>
+                        <td>{log.transaction.hash.substring(0, 20)}...</td>
+                        <td>{log.transaction.input.substring(0, 20)}...</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <p style={{ border: "1px solid black", padding: "1rem"}}>
+                <em>etherscan_logs</em> returned null. Did you add your ETHERSCAN_API_KEY?
+              </p>
+            )}
+            {moralisTokenBalances > 0 ? (
+              <>
+                <h3 style={{ margin: "40px 0 0 0" }}>Your Token Balance</h3>
+                <h5 style={{ margin: "5px", color: "grey" }}>
+                  <em>source: moralis</em>
+                </h5>
+                <table style={styles.table}>
+                  <tbody style={styles.tbody}>
+                    <tr style={{ borderBottom: "2px solid black" }}>
+                      <td>Token</td>
+                      <td>Balance</td>
+                    </tr>
+                    {moralisTokenBalances.map((token_balances, index) => (
+                      <tr key={index}>
+                        <td>{token_balances.name}</td>
+                        <td>
+                          {Reverse(
+                            AddStr(
+                              token_balances.balance,
+                              Number(token_balances.decimals),
+                              "."
+                            )
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <p style={{ border: "1px solid black", padding: "1rem"}}>
+                <em>moralis_erc20</em> returned null. Did you add your MORALIS_API_KEY? Do you have a balance?
+              </p>
+            )}
+            {infuraGasPrices ? (
+              <>
+                <h3 style={{ margin: "40px 0 0 0" }}>Current Gas Price</h3>
+                <h5 style={{ margin: "5px", color: "grey" }}>
+                  <em>source: infura</em>
+                </h5>
+                <table style={styles.table}>
+                  <tbody style={styles.tbody}>
+                    <tr style={{ borderBottom: "2px solid black" }}>
+                      <td>Price Type</td>
+                      <td>Current</td>
+                    </tr>
+                    <tr>
+                      <td>wei (hexidecimal)</td>
+                      <td>{infuraGasPrices.result}</td>
+                    </tr>
+                    <tr>
+                      <td>wei</td>
+                      <td>{parseInt(infuraGasPrices.result, 16)}</td>
+                    </tr>
+                    <tr>
+                      <td>ETH</td>
+                      <td>
+                        {parseInt(infuraGasPrices.result, 16) / 1000000000000000000}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <p style={{ border: "1px solid black", padding: "1rem"}}>
+                <em>infura_gas_price</em> returned null. Did you add your INFURA_APP_ID?
+              </p>
+            )}
+          </>
         ) : (
           <div className={styles.grid}>
             {provider ? (
@@ -94,104 +217,6 @@ export default function Home(props) {
             )}
           </div>
         )}
-        {moralisNFT ? (
-          <>
-            <img style={{ maxWidth: "100px" }} src={moralisNFT} alt="elon" />
-            <h5 style={{ margin: "5px", color: "grey" }}>
-              <em>source: moralis</em>
-            </h5>
-          </>
-        ) : null}
-        {etherscanLogs.length > 0 ? (
-          <>
-            <h3 style={{ margin: "40px 0 0 0" }}>
-              Hash Logs with Transaction Details
-            </h3>
-            <h5 style={{ margin: "5px", color: "grey" }}>
-              <em>source: etherscan</em>
-            </h5>
-            <table style={styles.table}>
-              <tbody style={styles.tbody}>
-                <tr style={{ borderBottom: "2px solid black" }}>
-                  <td>Token</td>
-                  <td>Balance</td>
-                  <td>Gas Used</td>
-                  <td>Transaction Hash</td>
-                  <td>Transaction Input</td>
-                </tr>
-                {etherscanLogs.map((log, index) => (
-                  <tr key={index}>
-                    <td>{log.address}</td>
-                    <td>{log.blockNumber}</td>
-                    <td>{log.gasUsed}</td>
-                    <td>{log.transaction.hash.substring(0, 20)}...</td>
-                    <td>{log.transaction.input.substring(0, 20)}...</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        ) : null}
-        {moralisTokenBalances ? (
-          <>
-            <h3 style={{ margin: "40px 0 0 0" }}>Your Token Balance</h3>
-            <h5 style={{ margin: "5px", color: "grey" }}>
-              <em>source: moralis</em>
-            </h5>
-            <table style={styles.table}>
-              <tbody style={styles.tbody}>
-                <tr style={{ borderBottom: "2px solid black" }}>
-                  <td>Token</td>
-                  <td>Balance</td>
-                </tr>
-                {moralisTokenBalances.map((token_balances, index) => (
-                  <tr key={index}>
-                    <td>{token_balances.name}</td>
-                    <td>
-                      {Reverse(
-                        AddStr(
-                          token_balances.balance,
-                          Number(token_balances.decimals),
-                          "."
-                        )
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        ) : null}
-        {infuraGasPrices ? (
-          <>
-            <h3 style={{ margin: "40px 0 0 0" }}>Current Gas Price</h3>
-            <h5 style={{ margin: "5px", color: "grey" }}>
-              <em>source: infura</em>
-            </h5>
-            <table style={styles.table}>
-              <tbody style={styles.tbody}>
-                <tr style={{ borderBottom: "2px solid black" }}>
-                  <td>Price Type</td>
-                  <td>Current</td>
-                </tr>
-                <tr>
-                  <td>wei (hexidecimal)</td>
-                  <td>{infuraGasPrices.result}</td>
-                </tr>
-                <tr>
-                  <td>wei</td>
-                  <td>{parseInt(infuraGasPrices.result, 16)}</td>
-                </tr>
-                <tr>
-                  <td>ETH</td>
-                  <td>
-                    {parseInt(infuraGasPrices.result, 16) / 1000000000000000000}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </>
-        ) : null}
       </main>
 
       <footer className={styles.footer}>
