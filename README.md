@@ -2,7 +2,38 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, run `stepzen start` in the stepzen folder. Copy the endpoint generated.
+
+Second, copy the `.env.sample` folder:
+
+```
+cp .env.sample .env
+```
+
+Add the generated stepzen endpoint and api key to the `.env` folder.
+
+Your key can be found at `https://stepzen.com/account`
+
+```
+STEPZEN_API_URL=https://youraccount.stepzen.net/api/web3/__graphql
+STEPZEN_API_KEY=
+```
+
+And add the API keys to the Web3 default providers:
+
+```
+ETHERSCAN_API_KEY=
+MORALIS_API_KEY=
+INFURA_APP_ID=
+```
+
+Second, run the development server:
+
+```bash
+npm install
+# or
+yarn install
+```
 
 ```bash
 npm run dev

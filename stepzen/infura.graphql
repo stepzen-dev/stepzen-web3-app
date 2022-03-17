@@ -1,0 +1,28 @@
+type Query {
+  """
+  Gets the contents of a block by block hash
+
+  Equivalent to GET https://$network.infura.io/v3/$infura_app_id
+  """
+  infura_gas_price(
+    """
+    The api key
+    """
+    infura_app_id: Secret!
+
+  ): Infura_JSON_RPC_Response
+    @rest(
+      method: POST
+      postbody: "{\"jsonrpc\":\"2.0\",\"method\":\"eth_gasPrice\",\"params\": [],\"id\":1}"
+      endpoint: "https://mainnet.infura.io/v3/$infura_app_id"
+    )
+}
+
+"""
+Standard JSON RPC Response
+"""
+type Infura_JSON_RPC_Response {
+  id: Int
+  jsonrpc: String
+  result: String
+}
