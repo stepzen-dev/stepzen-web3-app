@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import detectEthereumProvider from "@metamask/detect-provider";
 
+// Functions that convert balances to human readible
 import { AddStr, Reverse } from "../utils/functions";
 
 export default function Home(props) {
@@ -33,19 +34,20 @@ export default function Home(props) {
       const [ethereumPublicAddress] = await provider.request({
         method: "eth_requestAccounts",
       });
+
       if (ethereumPublicAddress) {
         setPublicAddress(ethereumPublicAddress);
+
         // Fetch data from external API
         const res = await fetch(`/api/hello?address=${ethereumPublicAddress}`)
         let data = await res.json()
         data = data.data
-
         console.log("data", data);
-        setMoralisTokenBalances(data.moralis_erc20);
 
+        // Get the data sources to display as tables on page   
         let metadata = JSON.parse(data.moralis_nft.metadata);
+        setMoralisTokenBalances(data.moralis_erc20);
         setMoralisNFT(`https://ipfs.io/${metadata.image.slice(7)}`);
-
         setInfuraGasPrices(data.infura_gas_price);
 
         // If a transaction was linked to the ethereum log

@@ -2,7 +2,7 @@ type Query {
   """
   Get Event Logs within a group of blocks
 
-  Equivalent to GET https://api.etherscan.io/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address=0x33990122638b9132ca29c723bdf037f1a891a70c&topic0=0xf63780e752c6a54a94fc52715dbc5518a3b4c3c2833d301a204226548a2a8545&apikey=N63DJ24AI2F87E3HGX2FII8QK3M7IXM2HN
+  Equivalent to GET https://api.etherscan.io/api?module=$module;&action=$action;&fromBlock=$fromBlock;&toBlock=latest&address=$address;&topic0=$topic;&apikey=$etherscan_apikey
   """
   etherscan_logs(
     """
@@ -10,14 +10,39 @@ type Query {
     """
     etherscan_apikey: Secret!
 
+    """
+    The block to get the logs from
+    """
+    fromBlock: String!
+
+    """
+    The address
+    """
+    address: String!
+
+    """
+    The topic
+    """
+    topic: String!
+
+    """
+    The module
+    """
+    module: String = "logs"
+
+    """
+    The action
+    """
+    action: String = "getLogs"
   ): Etherscan_Etherscan
     @rest(
-      endpoint: "https://api.etherscan.io/api?module=logs&action=getLogs&fromBlock=379224&toBlock=latest&address=0x33990122638b9132ca29c723bdf037f1a891a70c&topic0=0xf63780e752c6a54a94fc52715dbc5518a3b4c3c2833d301a204226548a2a8545&apikey=$etherscan_apikey"
+      endpoint: "https://api.etherscan.io/api"
+      arguments: [{ name: "apikey", argument: "etherscan_apikey" }]
     )
   """
   Get Transactions By Hash
 
-  Equivalent to GET https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=0x83c25c0e12e7d527aaba11a8d2ff9e51e984547d5d678d5450f63c18dd89f242&apikey=N63DJ24AI2F87E3HGX2FII8QK3M7IXM2HN
+  Equivalent to GET https://api.etherscan.io/api?module=$module;&action=$action;&txhash=$transaction_hash;&apikey=$etherscan_apikey
   """
   etherscan_transaction(
     """
@@ -28,10 +53,20 @@ type Query {
     The transaction hash
     """
     transaction_hash: String!
+
+    """
+    The module
+    """
+    module: String!
+
+    """
+    The action
+    """
+    action: String!
   ): Etherscan_Transaction
     @rest(
       resultroot: "result"
-      endpoint: "https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=$transaction_hash;&apikey=$etherscan_apikey"
+      endpoint: "https://api.etherscan.io/api?module=$module;&action=$action;&txhash=$transaction_hash;&apikey=$etherscan_apikey"
     )
 }
 
@@ -48,11 +83,15 @@ type Etherscan_Logs {
   transactionIndex: String
   transaction(
     etherscan_apikey: Secret!
+    action: String!
+    module: String!
   ): Etherscan_Transaction
     @materializer(
       query: "etherscan_transaction"
       arguments: [
         { name: "etherscan_apikey", argument: "etherscan_apikey" }
+        { name: "action", argument: "action" }
+        { name: "module", argument: "module" }
         { name: "transaction_hash", field: "transactionHash" }
       ]
     )
