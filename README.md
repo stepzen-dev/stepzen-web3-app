@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+If you do not have a StepZen account, the endpoint, `https://graphqlcf.stepzen.net/api/cfa9352aab44fe6cbf8bfd17d99807f6/__graphql` will provide mock data. 
+
+### Generate StepZen Endpoint (optional)
+
 First, run `stepzen start` in the stepzen folder. Copy the endpoint generated.
+
+Sign Up for StepZen here, https://stepzen.com/signup.
 
 Second, copy the `.env.sample` folder:
 
@@ -10,7 +16,7 @@ Second, copy the `.env.sample` folder:
 cp .env.sample .env
 ```
 
-Add the generated stepzen endpoint and api key to the `.env` folder.
+Add the generated stepzen endpoint and api key to the `.env` folder. 
 
 Your key can be found at `https://stepzen.com/account`
 
@@ -21,13 +27,18 @@ STEPZEN_API_KEY=
 
 And add the API keys to the Web3 default providers:
 
-```
+```bash
+# https://etherscan.io/register
 ETHERSCAN_API_KEY=
+# https://admin.moralis.io/register
 MORALIS_API_KEY=
+# https://infura.io/register
 INFURA_APP_ID=
 ```
 
-Second, run the development server:
+### Run the NextJS App
+
+Run the development server:
 
 ```bash
 npm install
