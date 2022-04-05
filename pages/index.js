@@ -59,10 +59,16 @@ export default function Home(props) {
 
         // If a transaction was linked to the ethereum log
         data?.etherscan_logs?.result.forEach(function (element) {
-          if (element.transaction.value) {
-            setEtherscanLogs((etherscanLogs) => [...etherscanLogs, element]);
-          }
-        });
+            // If data is coming from mock endpoint from studio,
+            // do not search for etherscan transactions.
+            if (process.env.STEPZEN_ENDPOINT_URL) {
+              if (element.transaction.value) {
+                setEtherscanLogs((etherscanLogs) => [...etherscanLogs, element]);
+              }
+            } else {
+              setEtherscanLogs((etherscanLogs) => [...etherscanLogs, element]);
+            }
+          });
       }
     } else {
       console.error("Please install MetaMask!", error);
@@ -116,11 +122,11 @@ export default function Home(props) {
                     </tr>
                     {etherscanLogs.map((log, index) => (
                       <tr key={index}>
-                        <td>{log.address}</td>
-                        <td>{log.blockNumber}</td>
-                        <td>{log.gasUsed}</td>
-                        <td>{log.transaction.hash.substring(0, 20)}...</td>
-                        <td>{log.transaction.input.substring(0, 20)}...</td>
+                        <td>{log?.address}</td>
+                        <td>{log?.blockNumber}</td>
+                        <td>{log?.gasUsed}</td>
+                        <td>{log?.transaction?.hash.substring(0, 20)}...</td>
+                        <td>{log?.transaction?.input.substring(0, 20)}...</td>
                       </tr>
                     ))}
                   </tbody>
@@ -131,7 +137,7 @@ export default function Home(props) {
                 <em>etherscan_logs</em> returned null. Did you add your ETHERSCAN_API_KEY?
               </p>
             )}
-            {moralisTokenBalances > 0 ? (
+            {moralisTokenBalances.length > 0 ? (
               <>
                 <h3 style={{ margin: "40px 0 0 0" }}>Your Token Balance</h3>
                 <h5 style={{ margin: "5px", color: "grey" }}>
