@@ -1,8 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# StepZen Web3 Starter Application
+
+## Introduction
+
+Start your journey into web3 today by using this StepZen Web3 Starter Application, that uses GraphQL-ized web3 APIs from different web3 Data Providers. Learn more about the technology behind this example in [this blog post](https://stepzen.com/blog/building-web3-applications-with-graphql-and-stepzen.md), or visit [StepZen GraphQL Studio](https://graphql.stepzen.com/etherscan,infura,moralis) to explore the web3 APIs used in this repository.
 
 ## Getting Started
 
-If you do not have a StepZen account, the endpoint, `https://graphqlcf.stepzen.net/api/cfa9352aab44fe6cbf8bfd17d99807f6/__graphql` will provide mock data. 
+If you do not have a StepZen account, the endpoint, `https://graphqlcf.stepzen.net/api/cfa9352aab44fe6cbf8bfd17d99807f6/__graphql` will provide mock data. This endpoint is created [StepZen GraphQL Studio](https://graphql.stepzen.com/etherscan,infura,moralis) using the web3 APIs from Etherscan, Infura and Moralis. 
 
 ### Generate StepZen Endpoint (optional)
 
@@ -21,7 +25,7 @@ Add the generated stepzen endpoint and api key to the `.env` folder.
 Your key can be found at `https://stepzen.com/account`
 
 ```
-STEPZEN_API_URL=https://youraccount.stepzen.net/api/web3/__graphql
+STEPZEN_API_URL=https://<YOUR_ACCOUNT>.stepzen.net/api/web3/__graphql
 STEPZEN_API_KEY=
 ```
 
@@ -62,15 +66,9 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+To learn more about StepZen, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [StepZen Documentation](https://stepzen/docs) - learn about StepZen features and APIs.
+- [StepZen GraphQL Studio](https://graphql.stepzen.com/etherscan,infura,moralis)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+You can check out [the StepZen Examples GitHub repository](https://github.com/stepzen-dev/examples) - your feedback and contributions are welcome!
