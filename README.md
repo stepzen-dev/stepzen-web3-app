@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Start your journey into web3 today by using this StepZen Web3 Starter Application, that uses GraphQL-ized web3 APIs from different web3 Data Providers. Learn more about the technology behind this example in [this blog post](https://stepzen.com/blog/building-web3-applications-with-graphql-and-stepzen.md), or visit [StepZen GraphQL Studio](https://graphql.stepzen.com/etherscan,infura,moralis) to explore the web3 APIs used in this repository.
+Start your journey into web3 today by using this StepZen Web3 Starter Application, that uses GraphQL-ized web3 APIs from different web3 Data Providers. Learn more about the technology behind this example in [this blog post](https://stepzen.com/blog/building-web3-applications-with-graphql-and-stepzen), or visit [StepZen GraphQL Studio](https://graphql.stepzen.com/etherscan,infura,moralis) to explore the web3 APIs used in this repository.
 
 ## Getting Started
 
